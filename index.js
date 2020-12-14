@@ -16,10 +16,10 @@ async function sauceDemo() {
     await inventoryElements(driver).sortDropdown.click();
     
     // Get selected item names
-    let itemNames = await inventoryElements(driver).itemNames;
-    let itemOne = await itemNames[0].getText();
-    let itemTwo = await itemNames[1].getText();
-    let itemThree = await itemNames[2].getText();
+    let items = await inventoryElements(driver).itemNames;
+    let itemOne = await items[0].getText();
+    let itemTwo = await items[1].getText();
+    let itemThree = await items[2].getText();
     
 
     // Get add to cart buttons and add items to cart
@@ -31,14 +31,14 @@ async function sauceDemo() {
     // Go to cart page
     await inventoryElements(driver).shoppingCartLink.click();
 
-    // Get cart item names and compare with added items
+    // Get cart item names and compare with selected item names
     let cartItems = await inventoryElements(driver).itemNames;
-    let cartitemOne = await cartItems[0].getText();
-    let cartitemTwo = await cartItems[1].getText();
-    let cartitemThree = await cartItems[2].getText();
-    assert.strictEqual(itemOne,cartitemOne ,"Added item1 does not match with cart item1");
-    assert.strictEqual(itemTwo,cartitemTwo,"Added item2 does not match with cart item2");
-    assert.strictEqual(itemThree, cartitemThree,"Added item3 does not match with cart item3");
+    let cartItemOne = await cartItems[0].getText();
+    let cartItemTwo = await cartItems[1].getText();
+    let cartItemThree = await cartItems[2].getText();
+    assert.strictEqual(itemOne,cartItemOne ,"Cart item 1 does not match with selected item 1");
+    assert.strictEqual(itemTwo,cartItemTwo,"Cart item 2 does not match with selected item 2");
+    assert.strictEqual(itemThree, cartItemThree,"Cart item 3 does not match with selected item 3");
     
     // Remove all items from cart
     const removeButtons = await cartElements(driver).removeButtons;
@@ -50,8 +50,8 @@ async function sauceDemo() {
     await cartElements(driver).continueShoppingButton.click();
    
     // Add new item into cart
-    itemNames = await inventoryElements(driver).itemNames;
-    itemOne = await itemNames[0].getText();
+    items = await inventoryElements(driver).itemNames;
+    itemOne = await items[0].getText();
     const itemPrices = await inventoryElements(driver).itemPrices; 
     const itemOnePrice = await itemPrices[0].getText();
     addToCartButtons = await inventoryElements(driver).addToCartButtons;
