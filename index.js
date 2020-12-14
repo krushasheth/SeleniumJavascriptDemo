@@ -19,7 +19,7 @@ function verifyCartItems(selectedItem, cartItem) {
 
 async function sauceDemoAutomation() {
   let driver = await new Builder().forBrowser(testData.browser).build();
-  await driver.get("https://www.saucedemo.com/");
+  await driver.get(testData.url);
   driver.manage().window().maximize();
 
   // Login User
