@@ -6,7 +6,7 @@ const {
   cartElements,
   checkoutElements,
 } = require("./webElements/index").default;
-const testData = require('./testData/index').default;
+const testData = require("./testData/index").default;
 
 // Compares the selected items and cart items
 function verifyCartItems(selectedItem, cartItem) {
