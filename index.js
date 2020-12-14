@@ -8,6 +8,30 @@ const {
 } = require("./webElements/index").default;
 const testData = require("./testData/index").default;
 
+let driver;
+
+async function initDriver() {
+  driver = await new Builder().forBrowser(testData.browser).build();
+  await driver.get(testData.url);
+  driver.manage().window().maximize();
+}
+
+// Login User
+async function loginUser() {
+  await loginElements(driver).userNameInput.sendKeys(testData.username);
+  await loginElements(driver).passwordInput.sendKeys(testData.password);
+  await loginElements(driver).loginButton.click();
+}
+
+// Enter checkout details and complete checkout
+async function checkoutUser() {
+  await checkoutElements(driver).firstName.sendKeys(testData.firstName);
+  await checkoutElements(driver).lastName.sendKeys(testData.lastName);
+  await checkoutElements(driver).postalCode.sendKeys(testData.postalCode);
+  await checkoutElements(driver).continueButton.click();
+  await checkoutElements(driver).finishButton.click();
+}
+
 // Compares the selected items and cart items
 function verifyCartItems(selectedItem, cartItem) {
   assert.strictEqual(
@@ -18,14 +42,8 @@ function verifyCartItems(selectedItem, cartItem) {
 }
 
 async function sauceDemoAutomation() {
-  let driver = await new Builder().forBrowser(testData.browser).build();
-  await driver.get(testData.url);
-  driver.manage().window().maximize();
-
-  // Login User
-  await loginElements(driver).userNameInput.sendKeys(testData.username);
-  await loginElements(driver).passwordInput.sendKeys(testData.password);
-  await loginElements(driver).loginButton.click();
+  await initDriver();
+  await loginUser();
 
   // Sort items
   await inventoryElements(driver).sortDropdown.click();
@@ -85,12 +103,7 @@ async function sauceDemoAutomation() {
   // Click the checkout button
   await cartElements(driver).checkoutButton.click();
 
-  // Enter checkout details and complete checkout
-  await checkoutElements(driver).firstName.sendKeys(testData.firstName);
-  await checkoutElements(driver).lastName.sendKeys(testData.lastName);
-  await checkoutElements(driver).postalCode.sendKeys(testData.postalCode);
-  await checkoutElements(driver).continueButton.click();
-  await checkoutElements(driver).finishButton.click();
+  await checkoutUser();
 
   //Close browser
   driver.close();
