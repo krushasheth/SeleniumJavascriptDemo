@@ -1,12 +1,14 @@
-const { Builder, By, Key, util, Thread } = require("selenium-webdriver");
-var assert = require("assert");
+const { Builder } = require("selenium-webdriver");
+const assert = require("assert");
 const {
   loginElements,
   inventoryElements,
   cartElements,
   checkoutElements,
-} = require("./WebElements/index").default;
+} = require("./webElements/index").default;
+const testData = require('./testData/index').default;
 
+// Compares the selected items and cart items
 function verifyCartItems(selectedItem, cartItem) {
   assert.strictEqual(
     selectedItem,
@@ -15,14 +17,14 @@ function verifyCartItems(selectedItem, cartItem) {
   );
 }
 
-async function sauceDemo() {
-  let driver = await new Builder().forBrowser("chrome").build();
+async function sauceDemoAutomation() {
+  let driver = await new Builder().forBrowser(testData.browser).build();
   await driver.get("https://www.saucedemo.com/");
   driver.manage().window().maximize();
 
   // Login User
-  await loginElements(driver).userNameInput.sendKeys("standard_user");
-  await loginElements(driver).passwordInput.sendKeys("secret_sauce");
+  await loginElements(driver).userNameInput.sendKeys(testData.username);
+  await loginElements(driver).passwordInput.sendKeys(testData.password);
   await loginElements(driver).loginButton.click();
 
   // Sort items
@@ -84,9 +86,9 @@ async function sauceDemo() {
   await cartElements(driver).checkoutButton.click();
 
   // Enter checkout details and complete checkout
-  await checkoutElements(driver).firstName.sendKeys("Krusha");
-  await checkoutElements(driver).lastName.sendKeys("Shah");
-  await checkoutElements(driver).postalCode.sendKeys("11375");
+  await checkoutElements(driver).firstName.sendKeys(testData.firstName);
+  await checkoutElements(driver).lastName.sendKeys(testData.lastName);
+  await checkoutElements(driver).postalCode.sendKeys(testData.postalCode);
   await checkoutElements(driver).continueButton.click();
   await checkoutElements(driver).finishButton.click();
 
@@ -94,4 +96,4 @@ async function sauceDemo() {
   driver.close();
 }
 
-sauceDemo();
+sauceDemoAutomation();
